@@ -1,5 +1,9 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
+import 'package:wordle/scenes/Victoria.dart';
+import 'package:wordle/scenes/Derrota.dart';
+
 class WordleGame {
   late String _targetWord;
   int _maxAttempts = 6;
@@ -17,21 +21,31 @@ class WordleGame {
   bool get isGameOver => _isGameOver;
 
   String _generateRandomWord() {
-    List<String> wordList = ['apple', 'banana', 'orange', 'grape', 'lemon'];
+    List<String> wordList = ['apple'];
     Random random = Random();
     return wordList[random.nextInt(wordList.length)];
   }
 
-  String submitGuess(String guess) {
+  String submitGuess(BuildContext context, String guess) {
+
     if (_isGameOver) {
-      return 'El juego ha terminado. Reinicia para jugar de nuevo.';
+      // Navegar a la escena de victoria
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Derrota()),
+      );
     }
 
     _previousGuesses.add(guess);
 
     if (guess == _targetWord) {
       _isGameOver = true;
-      return '¡Felicidades! Has adivinado la palabra.';
+      // Navegar a la escena de victoria
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Victoria()),
+      );
+
     }
 
     if (_previousGuesses.length >= _maxAttempts) {

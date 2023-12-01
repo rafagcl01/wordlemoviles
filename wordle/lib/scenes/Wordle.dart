@@ -31,7 +31,7 @@ class _WordleState extends State<Wordle> {
             ),
             ElevatedButton(
               onPressed: () {
-                String result = _wordleGame.submitGuess(_guessController.text);
+                String result = _wordleGame.submitGuess(context, _guessController.text);
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(result),
                 ));
@@ -39,7 +39,21 @@ class _WordleState extends State<Wordle> {
                 setState(() {});
               },
               child: Text('Hacer Conjetura'),
+
             ),
+            for (int i = 0; i < 6; i++)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  5,
+                      (index) => Container(
+                    width: 30,
+                    height: 30,
+                    color: Colors.grey,
+                    margin: EdgeInsets.all(5),
+                  ),
+                ),
+              ),
             Text('Conjeturas anteriores: ${_wordleGame.previousGuesses.join(', ')}'),
             Text('Intentos restantes: ${_wordleGame.maxAttempts - _wordleGame.previousGuesses.length}'),
           ],
