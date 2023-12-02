@@ -10,7 +10,9 @@ class _WordleState extends State<Wordle> {
   WordleGame _wordleGame = WordleGame();
   TextEditingController _guessController = TextEditingController();
 
-  List<List<Color>> _rowColors = List.generate(6, (index) => List.filled(5, Colors.grey));
+  List<List<Color>> _rowColors = List.generate(
+      6, (index) => List.filled(5, Colors.grey));
+  int _currentRow = 0; // Variable para realizar un seguimiento de la fila actual
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +35,8 @@ class _WordleState extends State<Wordle> {
             ElevatedButton(
               onPressed: () {
                 _updateRowColors();
-                String result = _wordleGame.submitGuess(context, _guessController.text);
+                String result = _wordleGame.submitGuess(
+                    context, _guessController.text);
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                   content: Text(result),
                 ));
@@ -48,8 +51,10 @@ class _WordleState extends State<Wordle> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: _generateRowColors(i),
               ),
-            Text('Conjeturas anteriores: ${_wordleGame.previousGuesses.join(', ')}'),
-            Text('Intentos restantes: ${_wordleGame.maxAttempts - _wordleGame.previousGuesses.length}'),
+            Text('Conjeturas anteriores: ${_wordleGame.previousGuesses.join(
+                ', ')}'),
+            Text('Intentos restantes: ${_wordleGame.maxAttempts -
+                _wordleGame.previousGuesses.length}'),
           ],
         ),
       ),
@@ -76,9 +81,9 @@ class _WordleState extends State<Wordle> {
   void _updateRowColors() {
     // Actualizar solo si la longitud de la palabra introducida es la misma que la palabra objetivo
     if (_guessController.text.length == _wordleGame.targetWord.length) {
-      for (int i = 0; i < 6; i++) {
-        _rowColors[i] = _getSquareColorsForRow(i);
-      }
+      _rowColors[_currentRow] = _getSquareColorsForRow(_currentRow);
+      _currentRow = (_currentRow + 1) % 6; // Mover a la siguiente fila circularmente
+      setState(() {}); // Asegurarse de que el cambio de estado se refleje en la interfaz de usuario
     }
   }
 
@@ -94,9 +99,11 @@ class _WordleState extends State<Wordle> {
         if (i < _guessController.text.length) {
           String guessedLetter = _guessController.text[i];
 
-          if (guessedLetter == targetLetter) {
+          if (guessedLetter == targetLetter && i == rowIndex) {
+            // Cambiar a verde solo si la letra coincide en posición
             squareColor = Colors.green;
-          } else if (_wordleGame.targetWord.contains(guessedLetter)) {
+          } else if (_wordleGame.targetWord.contains(guessedLetter) && _wordleGame.targetWord.indexOf(guessedLetter) != i) {
+            // Cambiar a amarillo solo si la letra está en la palabra pero no en la posición correcta
             squareColor = Colors.yellow;
           }
         }
