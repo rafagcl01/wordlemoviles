@@ -91,7 +91,9 @@ class _WordleState extends State<Wordle> {
     List<Color> colors = [];
 
     List<int> greenIndices = [];
-    List<int> yellowIndices = [];
+    List<int> yellowIndices = []
+
+
 
     for (int i = 0; i < 5; i++) {
       Color squareColor = Colors.grey;
@@ -104,14 +106,13 @@ class _WordleState extends State<Wordle> {
           // Marcamos como verde y recordamos el índice
           squareColor = Colors.green;
           greenIndices.add(i);
+
         } else if (_wordleGame.targetWord.contains(guessedLetter)) {
-          // Marcamos como amarillo si la letra no está en la posición correcta y no ha sido marcada como verde
-          if (!greenIndices.contains(_wordleGame.targetWord.indexOf(guessedLetter))) {
             squareColor = Colors.yellow;
             yellowIndices.add(i);
           }
         }
-      }
+
 
       colors.add(squareColor);
     }
@@ -119,15 +120,7 @@ class _WordleState extends State<Wordle> {
     // Si hay letras marcadas como verde, eliminamos los índices correspondientes de amarillo
     yellowIndices.removeWhere((index) => greenIndices.contains(index));
 
-    // Si hay letras iguales en la palabra objetivo y se marcó una como verde, marcamos las demás como amarillas
-    for (int i = 0; i < 5; i++) {
-      if (greenIndices.contains(i)) {
-        int index = _wordleGame.targetWord.indexOf(_wordleGame.targetWord[i]);
-        if (!greenIndices.contains(index) && !yellowIndices.contains(index)) {
-          colors[index] = Colors.yellow;
-        }
-      }
-    }
+
 
     return colors;
   }
