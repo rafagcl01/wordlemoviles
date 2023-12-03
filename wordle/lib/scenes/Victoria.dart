@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'Home.dart'; // Ajusta la ruta de importación según tu estructura de archivos
+import 'Home.dart';
+
 
 class Victoria extends StatefulWidget {
   @override
@@ -7,6 +8,7 @@ class Victoria extends StatefulWidget {
 }
 
 class _VictoriaState extends State<Victoria> {
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

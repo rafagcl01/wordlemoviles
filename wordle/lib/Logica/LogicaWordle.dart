@@ -1,72 +1,36 @@
 import 'dart:math';
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:wordle/scenes/Victoria.dart';
 import 'package:wordle/scenes/Derrota.dart';
-//import 'package:wordle/Logica/Words.json';
 
 class WordleGame {
   late String _targetWord;
   int _maxAttempts = 6;
-  List<String> wordList = ["beban"/*, "avion", "flaco", "envia", "ostra", "rubio", "lacio", "carta", "rotas"*/];
+  List<String> wordList = ["BEBAN"/*, "avion", "flaco", "envia", "ostra", "rubio", "lacio", "carta", "rotas"*/];
   List<String> _previousGuesses = [];
   bool _isGameOver = false;
+  int _currentAttempt = 0; // Nuevo miembro para el intento actual
 
   WordleGame({int maxAttempts = 6}) {
-
     _targetWord = _generateRandomWord();
     _maxAttempts = maxAttempts;
   }
 
   String get targetWord => _targetWord;
   int get maxAttempts => _maxAttempts;
+  int get currentAttempt => _currentAttempt; // Nuevo getter para el intento actual
   List<String> get previousGuesses => List.from(_previousGuesses);
   bool get isGameOver => _isGameOver;
 
-  //movidas del json que no logré que funcionaran
-  /*
- void loadWordsFromJson()  {
-    //try{
-      File file = File('Words.json');
-      String content =  file.readAsStringSync();
-
-      Map<String, dynamic> jsonData = jsonDecode(content);
-
-      List<dynamic> palabrasJson = jsonData['lista'];
-
-      wordList = palabrasJson.map((palabra) => palabra.toString()).toList();
-      print(wordList);
-    /*} catch (e) {
-      print('Error al cargar la lista de palabras del json');
-    }*/
-  }
-
-  Future<void> callToLoad() async{
-    //await loadWordsFromJson();
-  }
-
-  void ensureList() async{
-    if (wordList.isEmpty) {
-       loadWordsFromJson();
-    }
-  }
-   */
-
   String _generateRandomWord() {
-   
     int min = 0;
     Random random = Random();
     return wordList[random.nextInt((wordList.length))];
-
   }
 
   String submitGuess(BuildContext context, String guess) {
-
     if (_isGameOver) {
-      // Navegar a la escena de victoria
+      // Navegar a la escena de derrota
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => Derrota()),
@@ -74,6 +38,7 @@ class WordleGame {
     }
 
     _previousGuesses.add(guess);
+    _currentAttempt++; // Incrementar el intento actual
 
     if (guess == _targetWord) {
       _isGameOver = true;
@@ -82,7 +47,6 @@ class WordleGame {
         context,
         MaterialPageRoute(builder: (context) => Victoria()),
       );
-
     }
 
     if (_previousGuesses.length >= _maxAttempts) {
