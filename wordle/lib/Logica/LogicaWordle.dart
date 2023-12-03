@@ -1,16 +1,22 @@
 import 'dart:math';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:wordle/scenes/Victoria.dart';
 import 'package:wordle/scenes/Derrota.dart';
+//import 'package:wordle/Logica/Words.json';
 
 class WordleGame {
   late String _targetWord;
   int _maxAttempts = 6;
+  List<String> wordList = ["beban"/*, "avion", "flaco", "envia", "ostra", "rubio", "lacio", "carta", "rotas"*/];
   List<String> _previousGuesses = [];
   bool _isGameOver = false;
 
   WordleGame({int maxAttempts = 6}) {
+
     _targetWord = _generateRandomWord();
     _maxAttempts = maxAttempts;
   }
@@ -20,10 +26,41 @@ class WordleGame {
   List<String> get previousGuesses => List.from(_previousGuesses);
   bool get isGameOver => _isGameOver;
 
+  //movidas del json que no logré que funcionaran
+  /*
+ void loadWordsFromJson()  {
+    //try{
+      File file = File('Words.json');
+      String content =  file.readAsStringSync();
+
+      Map<String, dynamic> jsonData = jsonDecode(content);
+
+      List<dynamic> palabrasJson = jsonData['lista'];
+
+      wordList = palabrasJson.map((palabra) => palabra.toString()).toList();
+      print(wordList);
+    /*} catch (e) {
+      print('Error al cargar la lista de palabras del json');
+    }*/
+  }
+
+  Future<void> callToLoad() async{
+    //await loadWordsFromJson();
+  }
+
+  void ensureList() async{
+    if (wordList.isEmpty) {
+       loadWordsFromJson();
+    }
+  }
+   */
+
   String _generateRandomWord() {
-    List<String> wordList = ['apple'];
+   
+    int min = 0;
     Random random = Random();
-    return wordList[random.nextInt(wordList.length)];
+    return wordList[random.nextInt((wordList.length))];
+
   }
 
   String submitGuess(BuildContext context, String guess) {
