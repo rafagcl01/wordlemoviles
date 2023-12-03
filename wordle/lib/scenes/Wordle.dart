@@ -80,36 +80,53 @@ class _WordleState extends State<Wordle> {
 
   void _updateRowColors() {
     // Actualizar solo si la longitud de la palabra introducida es la misma que la palabra objetivo
-    if (_guessController.text.length == _wordleGame.targetWord.length) {
-      _rowColors[_currentRow] = _getSquareColorsForRow(_currentRow);
-      _currentRow = (_currentRow + 1) % 6; // Mover a la siguiente fila circularmente
+    if (_guessController.text.length == _wordleGame.targetWord.length && _currentRow < 6) {
+      _rowColors[_currentRow] = _getSquareColorsForRow();
+      _currentRow++;
       setState(() {}); // Asegurarse de que el cambio de estado se refleje en la interfaz de usuario
     }
   }
 
-  List<Color> _getSquareColorsForRow(int rowIndex) {
+  List<Color> _getSquareColorsForRow() {
     List<Color> colors = [];
+
+    List<int> greenIndices = [];
+    List<int> yellowIndices = [];
 
     for (int i = 0; i < 5; i++) {
       Color squareColor = Colors.grey;
 
       if (i < _wordleGame.targetWord.length) {
         String targetLetter = _wordleGame.targetWord[i];
+        String guessedLetter = _guessController.text[i];
 
-        if (i < _guessController.text.length) {
-          String guessedLetter = _guessController.text[i];
-
-          if (guessedLetter == targetLetter && i == rowIndex) {
-            // Cambiar a verde solo si la letra coincide en posición
-            squareColor = Colors.green;
-          } else if (_wordleGame.targetWord.contains(guessedLetter) && _wordleGame.targetWord.indexOf(guessedLetter) != i) {
-            // Cambiar a amarillo solo si la letra está en la palabra pero no en la posición correcta
+        if (guessedLetter == targetLetter) {
+          // Marcamos como verde y recordamos el índice
+          squareColor = Colors.green;
+          greenIndices.add(i);
+        } else if (_wordleGame.targetWord.contains(guessedLetter)) {
+          // Marcamos como amarillo si la letra no está en la posición correcta y no ha sido marcada como verde
+          if (!greenIndices.contains(_wordleGame.targetWord.indexOf(guessedLetter))) {
             squareColor = Colors.yellow;
+            yellowIndices.add(i);
           }
         }
       }
 
       colors.add(squareColor);
+    }
+
+    // Si hay letras marcadas como verde, eliminamos los índices correspondientes de amarillo
+    yellowIndices.removeWhere((index) => greenIndices.contains(index));
+
+    // Si hay letras iguales en la palabra objetivo y se marcó una como verde, marcamos las demás como amarillas
+    for (int i = 0; i < 5; i++) {
+      if (greenIndices.contains(i)) {
+        int index = _wordleGame.targetWord.indexOf(_wordleGame.targetWord[i]);
+        if (!greenIndices.contains(index) && !yellowIndices.contains(index)) {
+          colors[index] = Colors.yellow;
+        }
+      }
     }
 
     return colors;
