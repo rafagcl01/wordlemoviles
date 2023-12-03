@@ -9,6 +9,7 @@ class Wordle extends StatefulWidget {
 class _WordleState extends State<Wordle> {
   WordleGame _wordleGame = WordleGame();
   String _currentInput = '';
+
   List<List<LetterSquare>> letterSquareGrid = List.generate(
     6, (row) =>
       List.generate(
@@ -113,16 +114,14 @@ class _WordleState extends State<Wordle> {
               _wordleGame.targetWord.indexOf(guessedLetter) != i) {
             //letterSquareGrid[currentAttemptIndex][i].updateColor(Colors.yellow);
             updateSquareColor(currentAttemptIndex, i, Colors.yellow);
-          } //else {
+          } else {
+            updateSquareColor(currentAttemptIndex, i, Colors.grey);
             //letterSquareGrid[currentAttemptIndex][i].updateColor(Colors.grey);
-          //}
+          }
         }
       }
     }
   }
-
-
-
 }
 
 class LetterSquare extends StatelessWidget {
