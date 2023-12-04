@@ -1,5 +1,7 @@
+import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
 import 'Home.dart';
+import 'package:wordle/Logica/LogicaWordle.dart';
 
 
 class Victoria extends StatefulWidget {
@@ -8,6 +10,20 @@ class Victoria extends StatefulWidget {
 }
 
 class _VictoriaState extends State<Victoria> {
+  late ConfettiController _confettiController;
+
+  @override
+  void initState() {
+    super.initState();
+    _confettiController = ConfettiController(duration: const Duration(seconds: 3));
+    // Llama a la función que activa el confeti al inicio
+    _activateConfetti();
+  }
+
+  // Función para activar el confeti
+  void _activateConfetti() {
+    _confettiController.play();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,9 +35,21 @@ class _VictoriaState extends State<Victoria> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            ConfettiWidget(
+              confettiController: _confettiController,
+              blastDirectionality: BlastDirectionality.explosive,
+              shouldLoop: false,
+              maxBlastForce: 5, // Ajusta según sea necesario
+              minBlastForce: 2, // Ajusta según sea necesario
+              emissionFrequency: 0.2, // Ajusta según sea necesario
+            ),
             Text(
               '¡Enhorabuena!',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'la palabra correcta es: ${WordleGame().targetWord}' ,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             ElevatedButton(
               onPressed: () {

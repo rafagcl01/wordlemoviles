@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:wordle/scenes/Victoria.dart';
 import 'package:wordle/scenes/Derrota.dart';
 
+
 class WordleGame {
   late String _targetWord;
   int _maxAttempts = 6;

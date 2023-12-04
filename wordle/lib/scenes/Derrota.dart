@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'Home.dart'; // Ajusta la ruta de importación según tu estructura de archivos
+import 'package:wordle/Logica/LogicaWordle.dart';
 
 class Derrota extends StatefulWidget {
   @override
@@ -20,6 +21,10 @@ class _DerrotaState extends State<Derrota> {
             Text(
               '¡Lo siento, vuelve a intentarlo!',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+            Text(
+              'la palabra correcta era: ${WordleGame().targetWord}' ,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             ElevatedButton(
               onPressed: () {
