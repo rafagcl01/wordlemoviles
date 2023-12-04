@@ -9,6 +9,7 @@ class Home extends StatelessWidget {
         //title: Text('Wordle Game'),
       ),
       body: Center(
+      child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -23,10 +24,7 @@ class Home extends StatelessWidget {
             Image.asset(
               'assets/images/elige_una_tematica.PNG',
             ),
-            /*Text(
-              'Bienvenido a Wordle!',
-              style: TextStyle(fontSize: 20),
-            ),*/
+
             SizedBox(height: 15),
 
             GestureDetector(
@@ -96,6 +94,7 @@ class Home extends StatelessWidget {
             ),
           ],
         ),
+      ),
       ),
     );
   }
