@@ -11,6 +11,17 @@ class Victoria extends StatefulWidget {
 
 class _VictoriaState extends State<Victoria> {
   late ConfettiController _confettiController;
+  late String targetWord;
+
+@override
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+
+    Map<String, dynamic> arguments = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    targetWord = arguments['word'] ?? 'palabra';
+
+  }
+
 
   @override
   void initState() {
@@ -48,7 +59,7 @@ class _VictoriaState extends State<Victoria> {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             Text(
-              'la palabra correcta es: ${WordleGame().targetWord}' ,
+              'la palabra correcta es: ${targetWord}' ,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             ElevatedButton(

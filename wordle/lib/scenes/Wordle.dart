@@ -4,13 +4,24 @@ import 'package:wordle/Logica/LogicaWordle.dart';
 class Wordle extends StatefulWidget {
   @override
   _WordleState createState() => _WordleState();
-
 }
 
 class _WordleState extends State<Wordle> {
-  WordleGame _wordleGame = WordleGame();
+  late WordleGame _wordleGame;
+  late int selectedList;
+
   String _currentInput = '';
   int contEnteredLetter = 0;
+
+  @override
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+    Map<String, dynamic> arguments = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    selectedList = arguments['lista'] ?? 0;
+    //_wordleGame.setSelectedList(selectedList);
+    _wordleGame = WordleGame(list: selectedList);
+  }
+
 
   List<LetterSquare> _enteredLetters = List.generate(
     5, (index) => LetterSquare(Colors.greenAccent, ''),
@@ -30,8 +41,8 @@ class _WordleState extends State<Wordle> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: _enteredLetters.map((letterSquare) {
         return Container(
-          width: 30,
-          height: 30,
+          width: 35,
+          height: 35,
           color: letterSquare.colorL,
           margin: EdgeInsets.all(5),
           child: Center(
@@ -78,6 +89,7 @@ class _WordleState extends State<Wordle> {
         ),
       ),
     );
+
   }
 
 

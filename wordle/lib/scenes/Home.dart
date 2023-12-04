@@ -12,20 +12,46 @@ class Home extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            Image.asset(
+            'assets/images/Wordle_logo.png',
+            ),
+            /*Text(
               'Bienvenido a Wordle!',
               style: TextStyle(fontSize: 20),
-            ),
+            ),*/
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 // Navegar a la página de juego cuando se presiona el botón
-                Navigator.push(
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(builder: (context) => Wordle()), // Usa Wordle en lugar de Worldle
+                  '/wordle', // Usa Wordle en lugar de Worldle
+                  arguments: {'lista': 0}
                 );
               },
-              child: Text('Iniciar Juego'),
+              child: Text('Tematica: Comida'),
+            ),
+            ElevatedButton(
+             onPressed: () {
+               // Navegar a la página de juego cuando se presiona el botón
+               Navigator.pushNamed(
+                    context,
+                    '/wordle', // Usa Wordle en lugar de Worldle
+                    arguments: {'lista': 1}
+                );
+              },
+              child: Text('Tematica: Animales'),
+            ),
+            ElevatedButton(
+             onPressed: () {
+                // Navegar a la página de juego cuando se presiona el botón
+                Navigator.pushNamed(
+                    context,
+                    '/wordle', // Usa Wordle en lugar de Worldle
+                    arguments: {'lista': 2}
+                );
+              },
+              child: Text('Tematica: Océano'),
             ),
           ],
         ),

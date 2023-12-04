@@ -7,12 +7,19 @@ import 'package:wordle/scenes/Derrota.dart';
 class WordleGame {
   late String _targetWord;
   int _maxAttempts = 6;
-  List<String> wordList = ["BEBAN"/*, "avion", "flaco", "envia", "ostra", "rubio", "lacio", "carta", "rotas"*/];
+  List<String> FoodWords =  ['FIDEO', 'MELON', 'DONUT', 'FRESA', 'TACOS', 'PASTA', 'CARNE', 'FRUTA', 'ARROZ', 'PIZZA'];
+  List<String> AnimalWords = ['FAUNA', 'GARRA', 'PLUMA', 'RATON', 'CAZAR', 'CRIAR', 'HUIDA', 'CEBRA', 'RUGIR', 'ALADO'];
+  List<String> OceanWords = ['PULPO', 'REDES', 'PESCA', 'NADAR', 'CORAL', 'COSTA', 'BUZOS', 'OSTRA', 'ALGAS', 'BAHIA'];
+   late int gameSelectedList;
+  List<String> wordList = [];
   List<String> _previousGuesses = [];
   bool _isGameOver = false;
   int _currentAttempt = 0; // Nuevo miembro para el intento actual
 
-  WordleGame({int maxAttempts = 6}) {
+
+
+  WordleGame({required int list , int maxAttempts = 6} ) {
+    gameSelectedList = list;
     _targetWord = _generateRandomWord();
     _maxAttempts = maxAttempts;
   }
@@ -23,18 +30,31 @@ class WordleGame {
   List<String> get previousGuesses => List.from(_previousGuesses);
   bool get isGameOver => _isGameOver;
 
+  void setSelectedList(int value){
+    gameSelectedList = value;
+  }
+
+
   String _generateRandomWord() {
     int min = 0;
     Random random = Random();
+    if(gameSelectedList == 0){
+      wordList = FoodWords;
+    } else if (gameSelectedList == 1){
+      wordList = AnimalWords;
+    } else if (gameSelectedList == 2){
+      wordList = OceanWords;
+    }
     return wordList[random.nextInt((wordList.length))];
   }
 
   String submitGuess(BuildContext context, String guess) {
     if (_isGameOver) {
       // Navegar a la escena de derrota
-      Navigator.push(
+      Navigator.pushNamed(
         context,
-        MaterialPageRoute(builder: (context) => Derrota()),
+        '/defeat',
+        arguments: {'word': _targetWord}
       );
     }
 
@@ -44,13 +64,14 @@ class WordleGame {
     if (guess == _targetWord) {
       _isGameOver = true;
       // Navegar a la escena de victoria
-      Navigator.push(
+      Navigator.pushNamed(
         context,
-        MaterialPageRoute(builder: (context) => Victoria()),
+        '/victory',
+        arguments: {'word': _targetWord}
       );
     }
 
-    if (_previousGuesses.length >= _maxAttempts) {
+    if (_previousGuesses.length == _maxAttempts-1) {
       _isGameOver = true;
       return '¡Oh no! Has agotado tus intentos. La palabra era: $_targetWord';
     }

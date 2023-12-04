@@ -8,6 +8,19 @@ class Derrota extends StatefulWidget {
 }
 
 class _DerrotaState extends State<Derrota> {
+
+  late String targetWord;
+
+  @override
+  void didChangeDependencies(){
+    super.didChangeDependencies();
+
+    Map<String, dynamic> arguments = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+    targetWord = arguments['word'] ?? 'palabra';
+
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +36,7 @@ class _DerrotaState extends State<Derrota> {
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             Text(
-              'la palabra correcta era: ${WordleGame().targetWord}' ,
+              'la palabra correcta era: ${targetWord}' ,
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
             ),
             ElevatedButton(
